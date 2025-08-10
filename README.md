@@ -7,12 +7,14 @@
 //
 // A CRT shader for the Windows Terminal.
 //
+// Default settings are for a readable but still stylized look.
+//
 // Trying to balance looks and performance.
-// The film grain & flicker effects are very expensive,
+// The film grain and flicker effects are very expensive,
 // they require constant redraw of the terminal.
 //
 // A lot of this is probably not the best, as it is my first time writing HLSL.
-// Also I am not that great at math, and this was done under 4 hours.
+// Also, I am not that great at math, and this was done under 4 hours.
 //
 // Originally based on "CRT Shader Effect for Windows Terminal" by Lorgar Horusov.
 //
