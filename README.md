@@ -21,3 +21,5 @@
 // @see https://github.com/microsoft/terminal/blob/main/samples/PixelShaders
 // ---------------------------------------------------------------------------------
 ```
+
+<img width="2470" height="990" alt="image" src="https://github.com/user-attachments/assets/3b260c72-e36d-4849-aa65-d1ee4f5b5f69" />
