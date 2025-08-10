@@ -8,7 +8,8 @@
 // A CRT shader for the Windows Terminal.
 //
 // Trying to balance looks and performance.
-// The noise effect is the most expensive, since it needs to redraw the terminal.
+// The film grain & flicker effects are very expensive,
+// they require constant redraw of the terminal.
 //
 // A lot of this is probably not the best, as it is my first time writing HLSL.
 // Also I am not that great at math, and this was done under 4 hours.
