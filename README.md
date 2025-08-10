@@ -25,6 +25,6 @@
 // ---------------------------------------------------------------------------------
 ```
 
-<img width="2470" height="990" alt="image" src="https://github.com/user-attachments/assets/3b260c72-e36d-4849-aa65-d1ee4f5b5f69" />
+<img width="2470" height="990" alt="screenshot" src="https://github.com/user-attachments/assets/bbbd47f3-50ad-46ce-8294-8b1e65598945" />
 
 If you don't know how to add it to your Windows Terminal, see [this](https://github.com/microsoft/terminal/blob/main/samples/PixelShaders).
