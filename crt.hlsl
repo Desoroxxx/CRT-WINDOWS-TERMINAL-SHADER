@@ -27,8 +27,8 @@ Texture2D shaderTexture;
 SamplerState samplerState;
 
 cbuffer PixelShaderSettings {
-  float  time;
-  float  scale;
+  min10float time;
+  min10float scale;
 };
 
 #define ENABLE_BOOST 1
@@ -43,17 +43,17 @@ cbuffer PixelShaderSettings {
 
 #define ENABLE_FLICKER 0
 
-float4 applyGaussianBoost(float4 color) {
-    static float scaledGaussianSigma = BOOST_SIGMA * scale;
-    static float inverseSigmaSquared = 1.0F / (scaledGaussianSigma * scaledGaussianSigma);
+min10float4 applyGaussianBoost(min10float4 color) {
+    static min10float scaledGaussianSigma = BOOST_SIGMA * scale;
+    static min10float inverseSigmaSquared = 1.0F / (scaledGaussianSigma * scaledGaussianSigma);
 
-    static float gaussianExp = exp(-0.5F * inverseSigmaSquared);
-    static float gaussianExpSquared = gaussianExp * gaussianExp;
+    static min10float gaussianExp = exp(-0.5F * inverseSigmaSquared);
+    static min10float gaussianExpSquared = gaussianExp * gaussianExp;
 
 #if ENABLE_SCANLINE
-    static float luminanceBoostFactor = (BRIGHTNESS + SCANLINE_FACTOR) * (3.582F / scaledGaussianSigma) * gaussianExpSquared;
+    static min10float luminanceBoostFactor = (BRIGHTNESS + SCANLINE_FACTOR) * (3.582F / scaledGaussianSigma) * gaussianExpSquared;
 #else
-    static float luminanceBoostFactor = (BRIGHTNESS) * (3.582F / scaledGaussianSigma) * gaussianExpSquared;
+    static min10float luminanceBoostFactor = (BRIGHTNESS) * (3.582F / scaledGaussianSigma) * gaussianExpSquared;
 #endif
 
     color += color * luminanceBoostFactor;
@@ -61,32 +61,33 @@ float4 applyGaussianBoost(float4 color) {
     return color;
 }
 
-float4 applyFilmGrain(float4 color, float2 tex) {
-    float grainMix = lerp(1, frac(sin(dot((tex + time * float2(0.123f, 1.123f)), float2(12.9898f, 78.233f))) * 43758.5453f), NOISE_STRENGTH);
+min10float4 applyFilmGrain(min10float4 color, min10float2 tex) {
+    min10float grainMix = lerp(1, frac(sin(dot((tex + time * min10float2(0.123f, 1.123f)), min10float2(12.9898f, 78.233f))) * 43758.5453f), NOISE_STRENGTH);
 
     color *= grainMix;
 
     return color;
 }
 
-float4 applyScanlineMask(float4 color, float4 pos) {
-    float scanlineWeight = 1 - (floor(pos.y / scale) % 2) * SCANLINE_FACTOR;
+min10float4 applyScanlineMask(min10float4 color, min10float4 pos) {
+    min10float scanlinePhase = frac(pos.y / (scale * 2.0f));
+    min10float scanlineWeight = 1 - (step(0.5f, scanlinePhase) * SCANLINE_FACTOR);
 
     color *= scanlineWeight;
 
     return color;
 }
 
-float4 applyFlicker(float4 color) {
-    static float grainMix = lerp(1, frac(sin(dot((time * float2(0.123f, 1.123f)), float2(12.9898f, 78.233f))) * 43758.5453f), NOISE_STRENGTH);
+min10float4 applyFlicker(min10float4 color) {
+    static min10float grainMix = lerp(1, frac(sin(dot((time * min10float2(0.123f, 1.123f)), min10float2(12.9898f, 78.233f))) * 43758.5453f), NOISE_STRENGTH);
 
     color *= grainMix;
 
     return color;
 }
 
-float4 main(float4 pos : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET {
-    float4 color = shaderTexture.Sample(samplerState, tex);
+min10float4 main(min10float4 pos : SV_POSITION, min10float2 tex : TEXCOORD) : SV_TARGET {
+    min10float4 color = shaderTexture.Sample(samplerState, tex);
 
 #if ENABLE_BOOST
     color = applyGaussianBoost(color);
